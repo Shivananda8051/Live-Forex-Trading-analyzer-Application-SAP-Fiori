@@ -232,12 +232,6 @@ stop.bat
 
 ---
 
-## Screenshots
-
-> Add screenshots of the Dashboard, Chart, Journal, and Analytics views here.
-
----
-
 ## License
 
 This project is for educational and personal trading analysis purposes.
