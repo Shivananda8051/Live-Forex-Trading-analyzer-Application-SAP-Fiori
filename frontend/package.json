@@ -1,0 +1,14 @@
+{
+  "name": "forex-platform-ui",
+  "version": "1.0.0",
+  "description": "Forex Analysis Platform — OpenUI5 Frontend",
+  "scripts": {
+    "start": "ui5 serve --open index.html --port 8080",
+    "build": "ui5 build --clean-dest",
+    "lint": "eslint webapp"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^4.0.0",
+    "ui5-middleware-simpleproxy": "^3.8.0"
+  }
+}

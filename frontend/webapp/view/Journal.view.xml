@@ -1,0 +1,105 @@
+<mvc:View
+    controllerName="forex.platform.controller.Journal"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.f">
+
+    <Page title="Trade Journal" showNavButton="true" navButtonPress="onNavBack">
+        <headerContent>
+            <Button text="New Trade" icon="sap-icon://add" press="onAddTrade" type="Emphasized"/>
+        </headerContent>
+        <content>
+            <!-- Quick Stats -->
+            <Panel class="sapUiSmallMargin">
+                <l:Grid defaultSpan="L3 M6 S12">
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Win Rate"
+                                number="{journal>/analytics/win_rate}"
+                                unit="%"
+                                state="{= ${journal>/analytics/win_rate} >= 50 ? 'Good' : 'Error'}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Total Trades"
+                                number="{journal>/analytics/total_trades}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Profit Factor"
+                                number="{journal>/analytics/profit_factor}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Total PnL"
+                                number="{journal>/analytics/total_pnl}"
+                                unit="$"
+                                state="{= ${journal>/analytics/total_pnl} >= 0 ? 'Good' : 'Error'}"/>
+                        </f:header>
+                    </f:Card>
+                </l:Grid>
+            </Panel>
+
+            <!-- Trades Table -->
+            <Table id="tradesTable"
+                   items="{journal>/trades}"
+                   mode="SingleSelectLeft"
+                   alternateRowColors="true"
+                   growing="true"
+                   growingThreshold="20">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Trade History"/>
+                        <ToolbarSpacer/>
+                        <SearchField placeholder="Filter by pair..." liveChange="onFilterTrades"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column><Text text="Date"/></Column>
+                    <Column><Text text="Pair"/></Column>
+                    <Column><Text text="Direction"/></Column>
+                    <Column><Text text="Entry"/></Column>
+                    <Column><Text text="SL"/></Column>
+                    <Column><Text text="TP"/></Column>
+                    <Column><Text text="Lots"/></Column>
+                    <Column><Text text="Result"/></Column>
+                    <Column><Text text="PnL"/></Column>
+                    <Column><Text text="Score"/></Column>
+                    <Column><Text text="R:R"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onTradePress">
+                        <Text text="{path: 'journal>created_at', type: 'sap.ui.model.type.Date', formatOptions: {style: 'short'}}"/>
+                        <Text text="{journal>pair}"/>
+                        <ObjectStatus
+                            text="{journal>direction}"
+                            state="{= ${journal>direction} === 'BUY' ? 'Success' : 'Error'}"
+                            icon="{= ${journal>direction} === 'BUY' ? 'sap-icon://trend-up' : 'sap-icon://trend-down'}"/>
+                        <Text text="{journal>entry_price}"/>
+                        <Text text="{journal>sl_price}"/>
+                        <Text text="{journal>tp_price}"/>
+                        <Text text="{journal>lot_size}"/>
+                        <ObjectStatus
+                            text="{journal>result}"
+                            state="{= ${journal>result} === 'WIN' ? 'Success' : ${journal>result} === 'LOSS' ? 'Error' : 'Warning'}"/>
+                        <ObjectNumber
+                            number="{journal>pnl}"
+                            unit="$"
+                            state="{= ${journal>pnl} >= 0 ? 'Success' : 'Error'}"/>
+                        <Text text="{journal>trade_score}"/>
+                        <Text text="{journal>risk_reward}"/>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+
+</mvc:View>

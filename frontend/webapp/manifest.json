@@ -1,0 +1,130 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "forex.platform",
+    "type": "application",
+    "title": "Forex Analysis Platform",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "marketAPI": {
+        "uri": "/api/market/",
+        "type": "JSON"
+      },
+      "journalAPI": {
+        "uri": "/api/journal/",
+        "type": "JSON"
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "forex.platform.view.App",
+      "type": "XML",
+      "id": "appView"
+    },
+    "models": {
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {}
+      },
+      "market": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {}
+      },
+      "analysis": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {}
+      },
+      "journal": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {}
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "viewPath": "forex.platform.view",
+        "controlId": "appContainer",
+        "controlAggregation": "pages",
+        "transition": "slide"
+      },
+      "routes": [
+        {
+          "name": "dashboard",
+          "pattern": "",
+          "target": "dashboard"
+        },
+        {
+          "name": "chart",
+          "pattern": "chart/{pair}",
+          "target": "chart"
+        },
+        {
+          "name": "journal",
+          "pattern": "journal",
+          "target": "journal"
+        },
+        {
+          "name": "analytics",
+          "pattern": "analytics",
+          "target": "analytics"
+        },
+        {
+          "name": "settings",
+          "pattern": "settings",
+          "target": "settings"
+        }
+      ],
+      "targets": {
+        "dashboard": {
+          "viewName": "Dashboard",
+          "viewLevel": 1
+        },
+        "chart": {
+          "viewName": "Chart",
+          "viewLevel": 2
+        },
+        "journal": {
+          "viewName": "Journal",
+          "viewLevel": 2
+        },
+        "analytics": {
+          "viewName": "Analytics",
+          "viewLevel": 2
+        },
+        "settings": {
+          "viewName": "Settings",
+          "viewLevel": 2
+        }
+      }
+    },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.f": {},
+        "sap.tnt": {},
+        "sap.uxap": {},
+        "sap.ui.table": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  }
+}

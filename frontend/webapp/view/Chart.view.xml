@@ -1,0 +1,114 @@
+<mvc:View
+    controllerName="forex.platform.controller.Chart"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+
+    <Page title="Chart — {/selectedPair}" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <!-- Timeframe Selector + Drawing Toolbar -->
+            <Toolbar class="sapUiSmallMargin">
+                <SegmentedButton id="timeframeSelector" selectionChange="onTimeframeChange">
+                    <items>
+                        <SegmentedButtonItem text="M1" key="M1"/>
+                        <SegmentedButtonItem text="M5" key="M5"/>
+                        <SegmentedButtonItem text="M15" key="M15"/>
+                        <SegmentedButtonItem text="H1" key="H1" press=""/>
+                        <SegmentedButtonItem text="H4" key="H4"/>
+                        <SegmentedButtonItem text="D1" key="D1"/>
+                    </items>
+                </SegmentedButton>
+                <ToolbarSpacer/>
+                <!-- Drawing Tools -->
+                <SegmentedButton id="drawingTools" selectionChange="onDrawingToolChange">
+                    <items>
+                        <SegmentedButtonItem icon="sap-icon://cursor-arrow" key="select" tooltip="Select"/>
+                        <SegmentedButtonItem icon="sap-icon://trend-up" key="trendline" tooltip="Trendline"/>
+                        <SegmentedButtonItem icon="sap-icon://horizontal-bar-chart" key="horizontal" tooltip="Horizontal Line"/>
+                        <SegmentedButtonItem icon="sap-icon://resize" key="fibonacci" tooltip="Fibonacci"/>
+                        <SegmentedButtonItem icon="sap-icon://draw-rectangle" key="rectangle" tooltip="Rectangle Zone"/>
+                        <SegmentedButtonItem icon="sap-icon://forward" key="ray" tooltip="Ray"/>
+                        <SegmentedButtonItem icon="sap-icon://text" key="text" tooltip="Text Label"/>
+                    </items>
+                </SegmentedButton>
+                <Button icon="sap-icon://palette" press="onColorPicker" tooltip="Line Color" type="Transparent"/>
+                <Button icon="sap-icon://delete" press="onDeleteDrawing" tooltip="Delete Selected" type="Transparent"/>
+                <Button icon="sap-icon://save" press="onSaveDrawings" tooltip="Save Drawings" type="Transparent"/>
+                <ToolbarSeparator/>
+                <Button text="Save Pattern" icon="sap-icon://add-favorite" press="onSavePattern" type="Emphasized"/>
+            </Toolbar>
+
+            <!-- Chart Container -->
+            <VBox class="sapUiSmallMargin">
+                <core:HTML id="chartContainer" content="&lt;div id='tvChart' class='forexChartContainer'&gt;&lt;/div&gt;"/>
+            </VBox>
+
+            <!-- Bottom Panels -->
+            <l:Grid defaultSpan="L4 M6 S12">
+                <!-- Risk Calculator -->
+                <Panel headerText="Risk Calculator" class="sapUiSmallMargin">
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="Account Balance"/>
+                        <Input id="riskBalance" value="{/riskBalance}" type="Number" placeholder="10000"/>
+                        <Label text="Risk %" class="sapUiSmallMarginTop"/>
+                        <Input id="riskPct" value="{/riskPct}" type="Number" placeholder="1"/>
+                        <Label text="Stop Loss (pips)" class="sapUiSmallMarginTop"/>
+                        <Input id="riskSL" value="{/riskSL}" type="Number" placeholder="20"/>
+                        <Button text="Calculate" press="onCalculateRisk" type="Emphasized" class="sapUiSmallMarginTop"/>
+
+                        <ObjectStatus text="Lot Size: {/riskResult/lot_size}" state="Information" class="sapUiSmallMarginTop"/>
+                        <ObjectStatus text="Risk Amount: ${/riskResult/risk_amount}" state="Warning"/>
+                        <ObjectStatus text="TP 1:2 = {/riskResult/tp_options/rr_1_2} pips" state="Success"/>
+                        <ObjectStatus text="TP 1:3 = {/riskResult/tp_options/rr_1_3} pips" state="Success"/>
+                    </VBox>
+                </Panel>
+
+                <!-- Trade Score -->
+                <Panel headerText="Trade Quality Score" class="sapUiSmallMargin">
+                    <VBox class="sapUiSmallMargin" alignItems="Center">
+                        <ObjectStatus
+                            text="{path: 'analysis>/tradeScore', formatter: '.formatter.formatTradeScore'}"
+                            state="{= ${analysis>/tradeScore} >= 70 ? 'Success' : ${analysis>/tradeScore} >= 50 ? 'Warning' : 'Error'}"
+                            class="sapMObjectStatusLarge"/>
+                        <Label text="Trend aligned" class="sapUiSmallMarginTop"/>
+                        <Label text="Structure confirmed"/>
+                        <Label text="S/R zone proximity"/>
+                        <Label text="RSI confirmation"/>
+                        <Label text="Volume check"/>
+                        <Label text="Session active"/>
+                        <Label text="News clear"/>
+                    </VBox>
+                </Panel>
+
+                <!-- AI Summary -->
+                <Panel headerText="Market Summary" class="sapUiSmallMargin">
+                    <VBox class="sapUiSmallMargin">
+                        <FormattedText id="aiSummary" htmlText="{/aiSummary}"/>
+                    </VBox>
+                </Panel>
+            </l:Grid>
+
+            <!-- Pattern Matches -->
+            <Panel id="patternPanel" headerText="Pattern Matches" visible="{= ${/patternMatches}.length > 0}" class="sapUiSmallMargin">
+                <List items="{/patternMatches}">
+                    <CustomListItem>
+                        <HBox class="sapUiSmallMargin" alignItems="Center">
+                            <ObjectStatus
+                                text="{template_name}"
+                                state="Information"
+                                icon="sap-icon://overlay"
+                                class="sapUiSmallMarginEnd"/>
+                            <VBox>
+                                <Text text="{= Math.round(${completion} * 100) + '% formed — ' + Math.round(${similarity} * 100) + '% similar'}"/>
+                                <Label text="{matched_candles}/{total_candles} candles matched"/>
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </Panel>
+        </content>
+    </Page>
+
+</mvc:View>

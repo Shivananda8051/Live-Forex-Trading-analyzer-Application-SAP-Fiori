@@ -1,0 +1,149 @@
+/* Forex Platform — Dark Theme Overrides */
+
+html, body, #content {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Chart container */
+.forexChartContainer {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Drawing canvas overlay */
+.forexDrawingCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.forexDrawingCanvas.active {
+    pointer-events: all;
+    cursor: crosshair;
+}
+
+/* Trend score colors */
+.trendBullish {
+    color: #4CAF50 !important;
+    font-weight: bold;
+}
+
+.trendBearish {
+    color: #F44336 !important;
+    font-weight: bold;
+}
+
+.trendNeutral {
+    color: #FF9800 !important;
+    font-weight: bold;
+}
+
+/* Trade score gauge */
+.tradeScoreHigh {
+    color: #4CAF50 !important;
+}
+
+.tradeScoreMedium {
+    color: #FF9800 !important;
+}
+
+.tradeScoreLow {
+    color: #F44336 !important;
+}
+
+/* Pair tiles on dashboard */
+.forexPairTile {
+    min-height: 120px;
+}
+
+.forexPairTile .sapMGTHdrContent {
+    padding: 0.5rem;
+}
+
+/* News impact badges */
+.newsHigh {
+    background-color: #F44336 !important;
+    color: white !important;
+}
+
+.newsMedium {
+    background-color: #FF9800 !important;
+    color: white !important;
+}
+
+.newsLow {
+    background-color: #4CAF50 !important;
+    color: white !important;
+}
+
+/* Pattern overlay label */
+.patternOverlayLabel {
+    background: rgba(0, 229, 255, 0.15);
+    border: 1px solid #00E5FF;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #00E5FF;
+}
+
+/* Session indicator */
+.sessionActive {
+    color: #4CAF50;
+}
+
+.sessionInactive {
+    color: #757575;
+}
+
+/* Alert banner */
+.forexAlertBanner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    text-align: center;
+    padding: 8px;
+    background: #F44336;
+    color: white;
+    font-weight: bold;
+}
+
+/* Scanner table row colors */
+.scannerBullish td {
+    background-color: rgba(76, 175, 80, 0.1) !important;
+}
+
+.scannerBearish td {
+    background-color: rgba(244, 67, 54, 0.1) !important;
+}
+
+/* Drawing toolbar */
+.drawingToolbar {
+    display: flex;
+    gap: 4px;
+    padding: 8px;
+    background: var(--sapBackgroundColor);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.drawingToolbar .sapMBtn {
+    min-width: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .forexChartContainer {
+        height: 350px;
+    }
+}

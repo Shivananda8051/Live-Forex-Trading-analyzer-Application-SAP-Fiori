@@ -1,0 +1,117 @@
+<mvc:View
+    controllerName="forex.platform.controller.Analytics"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.f">
+
+    <Page title="Trading Analytics" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <!-- Stats Cards Row -->
+            <Panel headerText="Performance Summary" class="sapUiSmallMargin">
+                <l:Grid defaultSpan="L3 M6 S12">
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Win Rate"
+                                number="{journal>/analytics/win_rate}"
+                                unit="%"
+                                state="{= ${journal>/analytics/win_rate} >= 50 ? 'Good' : 'Error'}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Avg R:R"
+                                number="{journal>/analytics/avg_rr}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Profit Factor"
+                                number="{journal>/analytics/profit_factor}"
+                                state="{= ${journal>/analytics/profit_factor} >= 1.5 ? 'Good' : 'Error'}"/>
+                        </f:header>
+                    </f:Card>
+                    <f:Card>
+                        <f:header>
+                            <f:cards.NumericHeader
+                                title="Max Consecutive Wins"
+                                number="{journal>/analytics/max_consecutive_wins}"/>
+                        </f:header>
+                    </f:Card>
+                </l:Grid>
+            </Panel>
+
+            <!-- Detailed Stats -->
+            <l:Grid defaultSpan="L6 M12 S12">
+                <!-- Best/Worst Analysis -->
+                <Panel headerText="Best &amp; Worst" class="sapUiSmallMargin">
+                    <VBox class="sapUiSmallMargin">
+                        <ObjectStatus text="Best Pair: {journal>/analytics/best_pair}" state="Success" icon="sap-icon://accept"/>
+                        <ObjectStatus text="Worst Pair: {journal>/analytics/worst_pair}" state="Error" icon="sap-icon://decline" class="sapUiSmallMarginTop"/>
+                        <ObjectStatus text="Best Session: {journal>/analytics/best_session}" state="Success" icon="sap-icon://time-entry-request" class="sapUiSmallMarginTop"/>
+                        <ObjectStatus text="Avg Trade Score: {journal>/analytics/avg_trade_score}" state="Information" icon="sap-icon://quality-issue" class="sapUiSmallMarginTop"/>
+                    </VBox>
+                </Panel>
+
+                <!-- Score Validation -->
+                <Panel headerText="Score System Validation" class="sapUiSmallMargin">
+                    <VBox id="scoreValidation" class="sapUiSmallMargin">
+                        <Text text="Loading validation data..."/>
+                    </VBox>
+                </Panel>
+            </l:Grid>
+
+            <!-- Pair Win Rates -->
+            <Panel headerText="Win Rate by Pair" class="sapUiSmallMargin">
+                <Table items="{journal>/pairWinRates}" alternateRowColors="true">
+                    <columns>
+                        <Column><Text text="Pair"/></Column>
+                        <Column><Text text="Win Rate"/></Column>
+                        <Column><Text text="Visual"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <Text text="{journal>pair}"/>
+                            <ObjectNumber
+                                number="{journal>winRate}"
+                                unit="%"
+                                state="{= ${journal>winRate} >= 50 ? 'Success' : 'Error'}"/>
+                            <ProgressIndicator
+                                percentValue="{journal>winRate}"
+                                state="{= ${journal>winRate} >= 60 ? 'Success' : ${journal>winRate} >= 45 ? 'Warning' : 'Error'}"
+                                showValue="false"/>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <!-- Monthly PnL -->
+            <Panel headerText="Monthly PnL" class="sapUiSmallMargin">
+                <Table items="{journal>/monthlyPnl}" alternateRowColors="true">
+                    <columns>
+                        <Column><Text text="Month"/></Column>
+                        <Column><Text text="PnL"/></Column>
+                        <Column><Text text="Visual"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <Text text="{journal>month}"/>
+                            <ObjectNumber
+                                number="{journal>pnl}"
+                                unit="$"
+                                state="{= ${journal>pnl} >= 0 ? 'Success' : 'Error'}"/>
+                            <ProgressIndicator
+                                percentValue="{= Math.min(Math.abs(${journal>pnl}) / 10, 100)}"
+                                state="{= ${journal>pnl} >= 0 ? 'Success' : 'Error'}"
+                                showValue="false"/>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+        </content>
+    </Page>
+
+</mvc:View>

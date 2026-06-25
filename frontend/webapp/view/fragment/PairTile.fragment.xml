@@ -1,0 +1,102 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f">
+
+    <!-- EURUSD -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="EURUSD" subtitle="{= ${market>/ticks/EURUSD/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="EURUSD"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/EURUSD/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+    <!-- GBPUSD -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="GBPUSD" subtitle="{= ${market>/ticks/GBPUSD/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="GBPUSD"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/GBPUSD/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+    <!-- USDJPY -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="USDJPY" subtitle="{= ${market>/ticks/USDJPY/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="USDJPY"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/USDJPY/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+    <!-- XAUUSD -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="XAUUSD" subtitle="{= ${market>/ticks/XAUUSD/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="XAUUSD"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/XAUUSD/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+    <!-- GBPJPY -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="GBPJPY" subtitle="{= ${market>/ticks/GBPJPY/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="GBPJPY"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/GBPJPY/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+    <!-- EURJPY -->
+    <f:Card class="sapUiSmallMargin forexPairTile">
+        <f:header>
+            <f:cards.Header title="EURJPY" subtitle="{= ${market>/ticks/EURJPY/bid} || '—' }" press="onPairSelect">
+                <f:cards.Header.customData>
+                    <core:CustomData key="pair" value="EURJPY"/>
+                </f:cards.Header.customData>
+            </f:cards.Header>
+        </f:header>
+        <f:content>
+            <HBox class="sapUiTinyMargin">
+                <ObjectStatus text="Spread: {= ${market>/ticks/EURJPY/spread} || '—' }" state="Information"/>
+            </HBox>
+        </f:content>
+    </f:Card>
+
+</core:FragmentDefinition>

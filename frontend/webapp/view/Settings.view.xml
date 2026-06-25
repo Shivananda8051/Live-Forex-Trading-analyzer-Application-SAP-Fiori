@@ -1,0 +1,72 @@
+<mvc:View
+    controllerName="forex.platform.controller.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page title="Settings" showNavButton="true" navButtonPress="onNavBack">
+        <content>
+            <Panel headerText="Trading Preferences" class="sapUiSmallMargin">
+                <f:SimpleForm editable="true" layout="ResponsiveGridLayout"
+                    labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12"
+                    emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+                    columnsXL="1" columnsL="1" columnsM="1">
+                    <Label text="Default Risk %"/>
+                    <Input id="settingsRiskPct" value="{/settings/default_risk_pct}" type="Number"/>
+
+                    <Label text="Swing Lookback Period"/>
+                    <Select id="settingsLookback" selectedKey="{/settings/swing_lookback}">
+                        <items>
+                            <core:Item xmlns:core="sap.ui.core" key="3" text="3 (Aggressive)"/>
+                            <core:Item xmlns:core="sap.ui.core" key="5" text="5 (Default)"/>
+                            <core:Item xmlns:core="sap.ui.core" key="8" text="8 (Conservative)"/>
+                            <core:Item xmlns:core="sap.ui.core" key="13" text="13 (Very Conservative)"/>
+                        </items>
+                    </Select>
+
+                    <Label text="Sound Alerts"/>
+                    <Switch id="settingsSound" state="{/settings/alert_sound}"/>
+
+                    <Label text="Browser Notifications"/>
+                    <Switch id="settingsBrowser" state="{/settings/alert_browser}"/>
+                </f:SimpleForm>
+            </Panel>
+
+            <Panel headerText="Score Weights (Total should = 100)" class="sapUiSmallMargin">
+                <f:SimpleForm editable="true" layout="ResponsiveGridLayout"
+                    labelSpanXL="6" labelSpanL="6" labelSpanM="6" labelSpanS="12">
+                    <Label text="Trend Aligned"/>
+                    <Input value="{/settings/score_weights/trend_aligned}" type="Number" placeholder="20"/>
+                    <Label text="Structure Confirmed"/>
+                    <Input value="{/settings/score_weights/structure_confirmed}" type="Number" placeholder="15"/>
+                    <Label text="At S/R Zone"/>
+                    <Input value="{/settings/score_weights/at_sr_zone}" type="Number" placeholder="15"/>
+                    <Label text="Liquidity Swept"/>
+                    <Input value="{/settings/score_weights/liquidity_swept}" type="Number" placeholder="10"/>
+                    <Label text="RSI Confirmation"/>
+                    <Input value="{/settings/score_weights/rsi_confirmation}" type="Number" placeholder="10"/>
+                    <Label text="Volume Above Avg"/>
+                    <Input value="{/settings/score_weights/volume_above_avg}" type="Number" placeholder="10"/>
+                    <Label text="Session Active"/>
+                    <Input value="{/settings/score_weights/session_active}" type="Number" placeholder="10"/>
+                    <Label text="No News"/>
+                    <Input value="{/settings/score_weights/no_news}" type="Number" placeholder="10"/>
+                </f:SimpleForm>
+            </Panel>
+
+            <Toolbar class="sapUiSmallMargin">
+                <ToolbarSpacer/>
+                <Button text="Save Settings" press="onSaveSettings" type="Emphasized" icon="sap-icon://save"/>
+            </Toolbar>
+
+            <!-- MT5 Connection Status -->
+            <Panel headerText="MT5 Connection" class="sapUiSmallMargin">
+                <VBox class="sapUiSmallMargin" id="mt5Status">
+                    <Text text="Loading MT5 status..."/>
+                </VBox>
+            </Panel>
+        </content>
+    </Page>
+
+</mvc:View>

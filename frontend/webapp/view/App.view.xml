@@ -1,0 +1,70 @@
+<mvc:View
+    controllerName="forex.platform.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt">
+
+    <tnt:ToolPage id="toolPage">
+        <tnt:header>
+            <tnt:ToolHeader>
+                <Button
+                    icon="sap-icon://menu2"
+                    press="onToggleSideNav"
+                    type="Transparent"/>
+                <Title text="Forex Analysis Platform" level="H4"/>
+                <ToolbarSpacer/>
+                <!-- Connection Status -->
+                <ObjectStatus
+                    text="{/activeSession}"
+                    state="Success"
+                    icon="sap-icon://world"/>
+                <ObjectStatus
+                    text="{= ${/wsConnected} ? 'Live' : 'Offline'}"
+                    state="{= ${/wsConnected} ? 'Success' : 'Error'}"
+                    icon="{= ${/wsConnected} ? 'sap-icon://connected' : 'sap-icon://disconnected'}"/>
+                <!-- Selected Pair Price -->
+                <ObjectStatus
+                    text="{/selectedPair}: {/currentPrice}"
+                    state="Information"
+                    icon="sap-icon://money-bills"/>
+            </tnt:ToolHeader>
+        </tnt:header>
+
+        <tnt:sideContent>
+            <tnt:SideNavigation id="sideNav" selectedKey="dashboard">
+                <tnt:NavigationList>
+                    <tnt:NavigationListItem
+                        text="Dashboard"
+                        icon="sap-icon://home"
+                        key="dashboard"
+                        select="onNavItemSelect"/>
+                    <tnt:NavigationListItem
+                        text="Chart"
+                        icon="sap-icon://line-chart"
+                        key="chart"
+                        select="onNavItemSelect"/>
+                    <tnt:NavigationListItem
+                        text="Journal"
+                        icon="sap-icon://notes"
+                        key="journal"
+                        select="onNavItemSelect"/>
+                    <tnt:NavigationListItem
+                        text="Analytics"
+                        icon="sap-icon://business-objects-experience"
+                        key="analytics"
+                        select="onNavItemSelect"/>
+                    <tnt:NavigationListItem
+                        text="Settings"
+                        icon="sap-icon://settings"
+                        key="settings"
+                        select="onNavItemSelect"/>
+                </tnt:NavigationList>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <tnt:mainContents>
+            <NavContainer id="appContainer"/>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+
+</mvc:View>

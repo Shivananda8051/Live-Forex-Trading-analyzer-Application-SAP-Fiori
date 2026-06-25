@@ -1,0 +1,176 @@
+<mvc:View
+    controllerName="forex.platform.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+
+    <Page title="Dashboard" enableScrolling="true">
+        <content>
+            <!-- Top Row: Current pair summary -->
+            <Panel headerText="{/selectedPair}" class="sapUiSmallMargin">
+                <l:Grid defaultSpan="L3 M6 S12">
+                    <!-- Price Card -->
+                    <f:Card class="sapUiSmallMargin">
+                        <f:header>
+                            <f:cards.Header
+                                title="Current Price"
+                                subtitle="{/selectedPair}"
+                                statusText="Spread: {/spread}"/>
+                        </f:header>
+                        <f:content>
+                            <VBox class="sapUiSmallMargin">
+                                <ObjectStatus
+                                    text="{/currentPrice}"
+                                    state="Information"
+                                    class="sapMObjectStatusLarge"/>
+                            </VBox>
+                        </f:content>
+                    </f:Card>
+
+                    <!-- Trend Score Card -->
+                    <f:Card class="sapUiSmallMargin">
+                        <f:header>
+                            <f:cards.Header
+                                title="Trend Score"
+                                subtitle="{analysis>/trendDirection}"/>
+                        </f:header>
+                        <f:content>
+                            <VBox class="sapUiSmallMargin" alignItems="Center">
+                                <ObjectStatus
+                                    text="{analysis>/trendScore}/100"
+                                    state="{path: 'analysis>/trendDirection', formatter: '.formatter.trendState'}"
+                                    icon="{path: 'analysis>/trendDirection', formatter: '.formatter.trendIcon'}"
+                                    class="sapMObjectStatusLarge"/>
+                            </VBox>
+                        </f:content>
+                    </f:Card>
+
+                    <!-- Session Card -->
+                    <f:Card class="sapUiSmallMargin">
+                        <f:header>
+                            <f:cards.Header
+                                title="Session"
+                                subtitle="{analysis>/session/volatility} Volatility"/>
+                        </f:header>
+                        <f:content>
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="Active Sessions"/>
+                                <Text text="{= ${analysis>/session/active_sessions} ? ${analysis>/session/active_sessions}.join(' + ') : 'None' }"/>
+                                <ObjectStatus
+                                    text="{= ${analysis>/session/is_overlap} ? 'Overlap Active' : 'Single Session'}"
+                                    state="{= ${analysis>/session/is_overlap} ? 'Success' : 'Information'}"/>
+                            </VBox>
+                        </f:content>
+                    </f:Card>
+
+                    <!-- Market Structure Card -->
+                    <f:Card class="sapUiSmallMargin">
+                        <f:header>
+                            <f:cards.Header
+                                title="Structure"
+                                subtitle="Smart Money"/>
+                        </f:header>
+                        <f:content>
+                            <VBox class="sapUiSmallMargin">
+                                <Label text="BOS"/>
+                                <Text text="{= ${analysis>/structure/bos} ? ${analysis>/structure/bos/type} + ' @ ' + ${analysis>/structure/bos/level} : 'None' }"/>
+                                <Label text="CHOCH" class="sapUiSmallMarginTop"/>
+                                <Text text="{= ${analysis>/structure/choch} ? ${analysis>/structure/choch/type} + ' @ ' + ${analysis>/structure/choch/level} : 'None' }"/>
+                            </VBox>
+                        </f:content>
+                    </f:Card>
+                </l:Grid>
+            </Panel>
+
+            <!-- Multi-Timeframe Scanner -->
+            <Panel headerText="Multi-Timeframe Scanner" class="sapUiSmallMargin">
+                <Table id="scannerTable"
+                       items="{path: 'analysis>/scannerRows'}"
+                       mode="None"
+                       alternateRowColors="true">
+                    <columns>
+                        <Column><Text text="Timeframe"/></Column>
+                        <Column><Text text="Trend"/></Column>
+                        <Column><Text text="Score"/></Column>
+                        <Column><Text text="EMA 20"/></Column>
+                        <Column><Text text="EMA 50"/></Column>
+                        <Column><Text text="EMA 200"/></Column>
+                        <Column><Text text="RSI"/></Column>
+                        <Column><Text text="ADX"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <Text text="{analysis>timeframe}"/>
+                            <ObjectStatus
+                                text="{analysis>trend_direction}"
+                                state="{path: 'analysis>trend_direction', formatter: '.formatter.trendState'}"
+                                icon="{path: 'analysis>trend_direction', formatter: '.formatter.trendIcon'}"/>
+                            <ObjectNumber
+                                number="{analysis>trend_score}"
+                                unit="/100"
+                                state="{path: 'analysis>trend_direction', formatter: '.formatter.trendState'}"/>
+                            <Text text="{analysis>ema_20}"/>
+                            <Text text="{analysis>ema_50}"/>
+                            <Text text="{analysis>ema_200}"/>
+                            <Text text="{analysis>rsi}"/>
+                            <Text text="{analysis>adx}"/>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <!-- Bottom Row: Liquidity + News -->
+            <l:Grid defaultSpan="L6 M12 S12">
+                <!-- Liquidity Panel -->
+                <Panel headerText="Liquidity Zones" class="sapUiSmallMargin">
+                    <VBox class="sapUiSmallMargin">
+                        <Label text="Equal Highs (Liquidity Above)" design="Bold"/>
+                        <List items="{analysis>/liquidity/equal_highs}">
+                            <StandardListItem
+                                title="Level: {analysis>level}"
+                                description="Touches: {analysis>count}"
+                                icon="sap-icon://arrow-top"
+                                iconInset="false"/>
+                        </List>
+                        <Label text="Equal Lows (Liquidity Below)" design="Bold" class="sapUiSmallMarginTop"/>
+                        <List items="{analysis>/liquidity/equal_lows}">
+                            <StandardListItem
+                                title="Level: {analysis>level}"
+                                description="Touches: {analysis>count}"
+                                icon="sap-icon://arrow-bottom"
+                                iconInset="false"/>
+                        </List>
+                    </VBox>
+                </Panel>
+
+                <!-- News Panel -->
+                <Panel headerText="Upcoming News Events" class="sapUiSmallMargin">
+                    <List id="newsList" items="{/newsEvents}">
+                        <CustomListItem>
+                            <HBox class="sapUiSmallMargin" alignItems="Center">
+                                <ObjectStatus
+                                    text="{importance}"
+                                    state="{= ${importance} === 'HIGH' ? 'Error' : ${importance} === 'MEDIUM' ? 'Warning' : 'Success'}"
+                                    class="sapUiSmallMarginEnd"/>
+                                <VBox>
+                                    <Text text="{currency} — {event_name}"/>
+                                    <Label text="{path: 'time', formatter: '.formatter.timeRemaining'}"/>
+                                </VBox>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </Panel>
+            </l:Grid>
+
+            <!-- Pair Selection Tiles -->
+            <Panel headerText="Pairs Overview" class="sapUiSmallMargin">
+                <l:Grid defaultSpan="L2 M4 S6">
+                    <core:Fragment fragmentName="forex.platform.view.fragment.PairTile" type="XML"/>
+                </l:Grid>
+            </Panel>
+        </content>
+    </Page>
+
+</mvc:View>
